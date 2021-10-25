@@ -1,0 +1,139 @@
+/* ========================
+   ===      BIMAL K C   ===
+   =Statistical calculator=
+   ======================== */
+
+#include<stdio.h>
+#include<math.h>
+
+float calc_mean(float[],int);
+float calc_median(float[],int);
+double calc_stdev(float[],int);
+
+void displayMsg()
+{
+    char name [30];
+
+    //prompt and read in users first name
+    printf("Please enter your first name: \n");
+    scanf("%s", name);
+
+    printf("Welcome %s, to the statistical calculator!!! \n", name);
+}
+float calc_range(float numbers[], int amount)
+{
+    int i;
+    float min, max, diff;
+    min = numbers[0];
+    max = numbers[0];
+    for (i=1; i < amount; i++)
+    {
+        if (numbers[i] < min) min = numbers[i];
+        if (max < numbers[i]) max = numbers[i];
+    }
+
+    diff = max - min;
+    return diff;
+}
+float calc_mean(float array[],int n) {
+    int i;
+    float sum=0;
+   	for(i=0;i<n;i++)
+   	sum=sum+array[i];
+	return (sum/n);
+}
+
+float calc_median(float array[],int n) {
+	float temp;
+	int i,j;
+	for(i=n-2;i>=0;i--)
+    	for(j=0;j<=i;j++)
+        if(array[j]>=array[j+1])
+        {
+            temp=array[j];
+            array[j]=array[j+1];
+            array[j+1]=temp;
+        }
+
+	if(n%2==0)
+    	return (array[n/2]+array[n/2-1])/2;
+	else
+   	return array[n/2];
+}
+
+double calc_stdev(float array[],int n) {
+	int j;
+	double max[100],sum,variance,mean;
+	mean=calc_mean(array,n);
+	sum=0;
+	for(j=0;j<n;j++)
+	{
+      	max[j]=((array[j]-mean)*(array[j]-mean));
+    	sum+=max[j];
+	}
+	variance=sum/n;
+    return sqrt(variance);
+}
+
+	int main()
+	{
+	int i,n,choice,a;
+	float array[100],mean,median,range;
+	double standarddeviation, variance;
+    displayMsg();
+	printf("\nPlease Enter the No of Elements\n");
+	scanf("%d",&n);
+	printf("Please Enter the Elements\n");
+
+	for(i=0;i<=n-1;i++)
+    	scanf("%f",&array[i]);
+	do
+	{
+ 	printf("\n\tPlease, Enter Your Choice\n\t1.Mean\n\t2.Median\n\t3.Range\n\t4.Standard deviation\n\t5.Variance\n\t6. Find all\n\t7.Exit\n");
+    	scanf("%d",&choice);
+
+    	switch(choice)
+   	{
+        case 1: printf("Great !!! you choose to calculate mean of your data.\n");
+            mean=calc_mean(array,n);
+            printf("\n\tMean = %0.2f\n",mean);
+            break;
+        case 2: printf("Great !!! you choose to calculate median of your data.\n");
+            median=calc_median(array,n);
+            printf("\n\tMedian = %0.2f\n",median);
+            break;
+         case 3: printf("Great !!! you choose to calculate range of your data.\n");
+            range=calc_range(array,n);
+            printf("\n\tRange = %0.2f\n",range);
+            break;
+        case 4: printf("Great !!! you choose to calculate standard deviation of your data.\n");
+            standarddeviation=calc_stdev(array,n);
+            printf("\n\tStandard deviation = %0.2f\n",standarddeviation);
+            break;
+        case 5: printf("Great !!! you choose to calculate variance of your data.\n");
+            variance=calc_stdev(array,n);
+            printf("\n\tVariance = %0.2f\n",standarddeviation*standarddeviation);
+            break;
+        case 6: printf("Great !!! you choose to calculate all the statistical parameters of your data, and the results are:\n");
+            mean=calc_mean(array,n);
+            printf("\tMean = %0.2f\n",mean);
+            median=calc_median(array,n);
+            printf("\tMedian = %0.2f\n",median);
+            range=calc_range(array,n);
+            printf("\tRange = %0.2f\n",range);
+            standarddeviation=calc_stdev(array,n);
+            printf("\tStandard deviation = %0.2f\n",standarddeviation);
+            variance=calc_stdev(array,n);
+            printf("\tVariance = %0.2f\n",standarddeviation*standarddeviation);
+            break;
+        case 7: printf("Thank you for using our apps. Have a nice day !!!\n");
+            exit(1);
+            break;
+        default:printf("Wrong Option");
+            break;
+  	  }
+
+	}
+	while(choice!=7);
+	return 0;
+}
